@@ -1,0 +1,66 @@
+
+<p-messages [(value)]="msgs"></p-messages>
+
+<div *ngIf="produto$ | async as produto">
+
+    {{produto}}
+
+    <h3 class="first" *ngIf="!produto.id">Adicionar novo produto</h3>
+    <h3 class="first" *ngIf="produto.id">Edição de produto</h3>
+
+    <div class="ui-g ui-fluid" >
+
+        <div class="ui-g-6 ui-md-6">
+            <label for="nome-item">Nome do produto</label><br />
+            <div class="ui-inputgroup">
+                <span class="ui-inputgroup-addon"><i class="fa fa-bookmark"></i></span>
+                <input id="nome-item" type="text" pInputText [(ngModel)]="produto.nome" required />
+            </div>
+        </div>
+
+        <div class="ui-g-6 ui-md-6">
+            <label>Produto perecível</label><br />
+            <p-inputSwitch onLabel="Sim" offLabel="Não" [(ngModel)]="produto.perecivel"></p-inputSwitch>
+        </div>
+
+        <div class="ui-g-6 ui-md-6">
+            <label for="unidade-medida">Unidade de medida</label><br />
+            <p-selectButton id="unidade-medida" [options]="options.unidadesMedida" [(ngModel)]="produto.unidadeMedida" required></p-selectButton>
+        </div>
+
+        <div class="ui-g-6 ui-md-6" [ngSwitch]="produto.unidadeMedida">
+            <label for="unidade-medida">Quantidade</label><br />
+            <input-litro        *ngSwitchCase="'litro'"      [value]="produto.quantidade"></input-litro>
+            <input-quilograma   *ngSwitchCase="'quilograma'" [value]="produto.quantidade"></input-quilograma>
+            <input-unidade      *ngSwitchCase="'unidade'"    [value]="produto.quantidade"></input-unidade>
+            <span *ngSwitchDefault>Primeiramente, selecione uma unidade de medida.</span>
+        </div>
+
+        <div class="ui-g-6 ui-md-6">
+            <label for="preco-item">Preço</label><br />
+            <div class="ui-inputgroup">
+                <span class="ui-inputgroup-addon">R$</span>
+                <input id="preco-item" type="text" pInputText [(ngModel)]="produto.preco" />
+            </div>
+        </div>
+
+        <div class="ui-g-6 ui-md-6">
+            <label for="dt-validade">Data de validade</label><br />
+            <p-calendar id="dt-validade" dateFormat="dd/mm/yy" [minDate]="produto.dtFabricacao" [(ngModel)]="produto.dtValidade" [showIcon]="true"></p-calendar>
+        </div>
+
+        <div class="ui-g-6 ui-md-6">
+            <label for="dt-fabricacao">Data de fabricação</label><br />
+            <p-calendar id="dt-fabricacao" dateFormat="dd/mm/yy" [(ngModel)]="produto.dtFabricacao" [showIcon]="true" required></p-calendar>
+        </div>
+
+
+    </div>
+
+    <div class="ui-g-6 ui-md-6" style="float: right; text-align: right">
+        <button pButton type="button" (click)="cancel()" label="Cancelar" class="ui-button-danger"></button>
+        &nbsp;
+        <button pButton type="button" (click)="save()" label="Salvar" class="ui-button-success"></button>
+    </div>
+
+</div>
